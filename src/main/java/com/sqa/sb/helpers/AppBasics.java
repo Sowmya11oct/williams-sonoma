@@ -2,6 +2,8 @@ package com.sqa.sb.helpers;
 
 import java.util.*;
 
+import com.sqa.sb.helper.exceptions.*;
+
 public class AppBasics {
 
 	static Scanner scanner = new Scanner(System.in);
@@ -44,10 +46,43 @@ public class AppBasics {
 	 * @return
 	 */
 	public static int requestInt(String question) {
-		// TODO Auto-generated method stub
 		System.out.println(question);
 		String input = scanner.nextLine();
 		int value = Integer.parseInt(input);
+		return value;
+	}
+
+	/**
+	 * @param string
+	 * @param j
+	 * @param i
+	 * @param string
+	 * @return
+	 */
+	public static int requestInt(String question, int min, int max, String errorResponse) {
+		// TODO Auto-generated method stub
+		String input;
+		int value = 0;
+		boolean isValid = false;
+		while (isValid) {
+			System.out.println(question + " ");
+			input = scanner.nextLine().trim();
+			try {
+				value = Integer.parseInt(input);
+				if (value < min) {
+					throw new UnderMinRangeException();
+				} else if (value > max) {
+					throw new OverMaxRangeException();
+				}
+				isValid = true;
+			} catch (NumberFormatException e) {
+				System.out.println("You have not entered a valid numeric value (" + input + ")");
+			} catch (UnderMinRangeException e) {
+				System.out.println(errorResponse + "(" + input + ")[Under" + min + "]");
+			} catch (OverMaxRangeException e) {
+				System.out.println(errorResponse + "(" + input + ")[Over" + max + "]");
+			}
+		}
 		return value;
 	}
 
@@ -71,4 +106,10 @@ public class AppBasics {
 		// int value = Integer.parseInt(input);
 		return input;
 	}
+	/**
+	 * @param string
+	 * @param i
+	 * @param j
+	 * @param string2
+	 */
 }
